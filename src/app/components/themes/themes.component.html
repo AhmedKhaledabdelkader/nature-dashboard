@@ -1,0 +1,102 @@
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🎨 Manage Themes</h2>
+  
+    <!-- Add / Update Theme Form -->
+    <div class="card shadow p-4 mb-5">
+      <h4 class="mb-3">Add / Update Theme</h4>
+      <form [formGroup]="themeForm" enctype="multipart/form-data">
+  
+        <div class="row g-3">
+          <!-- Name EN -->
+          <div class="col-md-6">
+            <label class="form-label">Theme Name (EN)</label>
+            <input type="text" class="form-control"
+                   placeholder="Ocean Cleanup"
+                   formControlName="themeName[en]">
+          </div>
+  
+          <!-- Name AR -->
+          <div class="col-md-6">
+            <label class="form-label">اسم الموضوع (AR)</label>
+            <input type="text" class="form-control text-end"
+                   placeholder="تنظيف المحيطات"
+                   formControlName="themeName[ar]">
+          </div>
+  
+          <!-- Description EN -->
+          <div class="col-md-6">
+            <label class="form-label">Description (EN)</label>
+            <textarea class="form-control" placeholder="Description in English"
+                      formControlName="themeDescription[en]"></textarea>
+          </div>
+  
+          <!-- Description AR -->
+          <div class="col-md-6">
+            <label class="form-label">الوصف (AR)</label>
+            <textarea class="form-control text-end" placeholder="الوصف بالعربية"
+                      formControlName="themeDescription[ar]"></textarea>
+          </div>
+  
+          <!-- Theme Image -->
+          <div class="col-md-6">
+            <label class="form-label">Theme Image</label>
+            <input type="file" class="form-control" (change)="onFileChange($event, 'themeImage')">
+          </div>
+        </div>
+  
+        <p class="text-center response-success-msg" *ngIf="successMsg">{{successMsg}}</p>
+        <p class="text-center response-err-msg" *ngIf="errorMsg">{{errorMsg}}</p>
+  
+        <!-- Submit Button -->
+        <div class="mt-4 d-flex justify-content-start">
+          <button type="submit" class="btn btn-success" (click)="addTheme()">➕ Add Theme</button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Language Switcher -->
+    <div>
+      <label for="langSelect" class="me-2 fw-bold">Language:</label>
+      <select id="langSelect" class="form-select d-inline w-auto"
+              [(ngModel)]="selectedLang"
+              (change)="loadThemes()">
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+      </select>
+    </div>
+  
+    <!-- Themes List (GET + DELETE) -->
+    <div class="card shadow p-4 mt-4">
+      <h4 class="mb-3">All Themes</h4>
+      <table class="table table-bordered text-center align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Image</th>
+            <th>Name ({{selectedLang}})</th>
+            <th>Description ({{selectedLang}})</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let theme of themes; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <img *ngIf="theme.themeImage"
+                   [src]="'http://127.0.0.1:8000/storage/' + theme.themeImage"
+                   width="50"
+                   alt="Theme Image">
+            </td>
+            <td>{{ theme['themeName'] }}</td>
+            <td>{{ theme['themeDescription'] }}</td>
+            <td>
+              <button class="btn btn-sm btn-danger ms-3" (click)="deleteTheme(theme.id)">🗑 Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

@@ -1,0 +1,97 @@
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🌊 Manage Impacts</h2>
+  
+    <!-- Add / Update Impact Form -->
+    <div class="card shadow p-4 mb-5">
+      <h4 class="mb-3">Add / Update Impact</h4>
+      <form [formGroup]="impactForm" enctype="multipart/form-data">
+  
+        <div class="row g-3">
+          <!-- English Name -->
+          <div class="col-md-6">
+            <label class="form-label">Impact Name (EN)</label>
+            <input type="text" class="form-control"
+                   placeholder="Marines Restored"
+                   formControlName="impactName[en]">
+          </div>
+  
+          <!-- Arabic Name -->
+          <div class="col-md-6">
+            <label class="form-label">اسم الأثر (AR)</label>
+            <input type="text" class="form-control text-end"
+                   placeholder="استعادة منشأة البحرية"
+                   formControlName="impactName[ar]">
+          </div>
+  
+          <!-- Impact Number -->
+          <div class="col-md-6">
+            <label class="form-label">Impact Number</label>
+            <input type="number" class="form-control"
+                   placeholder="1000"
+                   formControlName="impactNumber">
+          </div>
+  
+          <!-- Impact Logo -->
+          <div class="col-md-6">
+            <label class="form-label">Impact Logo</label>
+            <input type="file" class="form-control"
+                   (change)="onFileChange($event, 'impactLogo')">
+          </div>
+        </div>
+  
+        <p class="text-center response-success-msg" *ngIf="successMsg">{{successMsg}}</p>
+        <p class="text-center response-err-msg" *ngIf="errorMsg">{{errorMsg}}</p>
+
+        <!-- Submit Buttons -->
+        <div class="mt-4 d-flex justify-content-between">
+          <button type="submit" class="btn btn-success" (click)="addImpact()">➕ Add Impact</button>
+
+        
+        </div>
+      </form>
+    </div>
+  
+    <!-- Language Switcher -->
+    <div>
+      <label for="langSelect" class="me-2 fw-bold">Language:</label>
+      <select id="langSelect" class="form-select d-inline w-auto"
+              [(ngModel)]="selectedLang"
+              (change)="loadImpacts()">
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+      </select>
+    </div>
+  
+    <!-- Impact List (GET + DELETE) -->
+    <div class="card shadow p-4 mt-4">
+      <h4 class="mb-3">All Impacts</h4>
+      <table class="table table-bordered text-center align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Logo</th>
+            <th>Name ({{selectedLang}})</th>
+            <th>Number</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let impact of impacts; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <img [src]="'http://127.0.0.1:8000/storage/' + impact.impactLogo"
+                   width="50"
+                   alt="Impact Logo">
+            </td>
+            <td>{{ impact['impactName'] }}</td>
+            <td>{{ impact['impactNumber'] }}</td>
+            <td>
+              <button class="btn btn-sm btn-danger ms-3" (click)="deleteImpact(impact.id)">🗑 Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

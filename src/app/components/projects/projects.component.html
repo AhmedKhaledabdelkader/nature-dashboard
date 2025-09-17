@@ -1,0 +1,107 @@
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🚀 Manage Projects</h2>
+  
+    <!-- Project Form -->
+    <div class="card shadow p-4 mb-5">
+      <h4 class="mb-3">Add / Update Project</h4>
+      <form [formGroup]="projectForm" (ngSubmit)="addProject()" enctype="multipart/form-data">
+        <div class="row g-3">
+          <!-- Project Name EN -->
+          <div class="col-md-6">
+            <label class="form-label">Project Name (EN)</label>
+            <input type="text" formControlName="projectName[en]" class="form-control" placeholder="Green Energy Project">
+          </div>
+  
+          <!-- Project Name AR -->
+          <div class="col-md-6">
+            <label class="form-label">اسم المشروع (AR)</label>
+            <input type="text" formControlName="projectName[ar]" class="form-control text-end" placeholder="مشروع الطاقة الخضراء">
+          </div>
+  
+          <!-- Project Description EN -->
+          <div class="col-md-6">
+            <label class="form-label">Description (EN)</label>
+            <textarea formControlName="projectDescription[en]" rows="2" class="form-control"
+                      placeholder="This project focuses on renewable energy..."></textarea>
+          </div>
+  
+          <!-- Project Description AR -->
+          <div class="col-md-6">
+            <label class="form-label">الوصف (AR)</label>
+            <textarea formControlName="projectDescription[ar]" rows="2" class="form-control text-end"
+                      placeholder="هذا المشروع يركز على الطاقة المتجددة..."></textarea>
+          </div>
+  
+          <!-- Project Image -->
+          <div class="col-md-6">
+            <label class="form-label">Upload Project Image</label>
+            <input type="file" (change)="onFileChange($event, 'projectImage')" class="form-control">
+          </div>
+  
+          <!-- Country -->
+          <div class="col-md-6">
+            <label class="form-label">Select Country</label>
+            <select formControlName="country_id" class="form-select">
+              <option *ngFor="let country of countries" [value]="country.id">
+                {{ country['countryName'] }}
+              </option>
+            </select>
+          </div>
+        </div>
+  
+        <!-- Submit Button -->
+        <div class="mt-4 d-flex justify-content-between">
+          <button type="submit" class="btn btn-success">➕ Add Project</button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Language Switcher -->
+    <div class="mb-4">
+      <label for="langSelect" class="me-2 fw-bold">Language:</label>
+      <select id="langSelect" class="form-select d-inline w-auto"
+              [(ngModel)]="selectedLang"
+              (change)="loadProjects(); loadCountries()">
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+      </select>
+    </div>
+  
+    <!-- Projects List -->
+    <div class="card shadow p-4">
+      <h4 class="mb-3">All Projects</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Image</th>
+              <th>Name ({{selectedLang}})</th>
+              <th>Description ({{selectedLang}})</th>
+              <th>Country</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let project of projects; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <img [src]="'http://127.0.0.1:8000/storage/' + project.projectImage"
+                     width="60" class="rounded shadow-sm"
+                     alt="Project Image">
+              </td>
+              <td>{{ project['projectName'] }}</td>
+              <td>{{ project['projectDescription'] }}</td>
+              <td>{{ project.countryName }}</td>
+              <td>
+                <button class="btn btn-sm btn-danger ms-2" (click)="deleteProject(project.id)">🗑 Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

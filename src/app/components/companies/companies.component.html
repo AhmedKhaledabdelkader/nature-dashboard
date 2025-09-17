@@ -1,0 +1,113 @@
+
+<div class="container mt-5" >
+    <h2 class="text-center mb-4">🌿 Manage Companies</h2>
+  
+    <!-- Add / Update Company Form -->
+    <div class="card shadow p-4 mb-5">
+      <h4 class="mb-3">Add / Update Company</h4>
+      <form [formGroup]="companyForm"enctype="multipart/form-data">
+  
+        <div class="row g-3">
+          <!-- English Name -->
+          <div class="col-md-6">
+            <label class="form-label">Company Name (EN)</label>
+            <input type="text" class="form-control"
+                   placeholder="Nature Solutions"
+                   formControlName="company_name[en]">
+          </div>
+  
+          <!-- Arabic Name -->
+          <div class="col-md-6">
+            <label class="form-label">اسم الشركة (AR)</label>
+            <input type="text" class="form-control text-end"
+                   placeholder="المتحدة للطبيعة"
+                   formControlName="company_name[ar]">
+          </div>
+  
+          <!-- English Description -->
+          <div class="col-md-6">
+            <label class="form-label">Description (EN)</label>
+            <textarea class="form-control" rows="2"
+                      placeholder="This is Nature Solutions company"
+                      formControlName="company_description[en]"></textarea>
+          </div>
+  
+          <!-- Arabic Description -->
+          <div class="col-md-6">
+            <label class="form-label">الوصف (AR)</label>
+            <textarea class="form-control text-end" rows="2"
+                      placeholder="هذه هي شركة المتحدة للطبيعة"
+                      formControlName="company_description[ar]"></textarea>
+          </div>
+  
+          <!-- Company Image -->
+          <div class="col-md-6">
+            <label class="form-label">Company Image</label>
+            <input type="file" class="form-control"
+                   (change)="onFileChange($event, 'company_image')">
+          </div>
+  
+          <!-- Company Logo -->
+          <div class="col-md-6">
+            <label class="form-label">Company Logo</label>
+            <input type="file" class="form-control"
+                   (change)="onFileChange($event, 'company_logo')">
+          </div>
+        </div>
+  
+        <!-- Submit Buttons -->
+        <div class="mt-4 d-flex justify-content-between">
+          <button type="submit" class="btn btn-success" (click)="addCompany()">➕ Add Company</button>
+          
+        </div>
+      </form>
+    </div>
+  
+
+    <!-- Language Switcher -->
+    <div>
+        <label for="langSelect" class="me-2 fw-bold">Language:</label>
+        <select id="langSelect" class="form-select d-inline w-auto"
+                [(ngModel)]="selectedLang"
+                (change)="loadCompanies()">
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+      </div>
+    </div>
+
+
+
+    <!-- Company List (GET + DELETE) -->
+    <div class="card shadow p-4">
+      <h4 class="mb-3">All Companies</h4>
+      <table class="table table-bordered text-center align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Logo</th>
+            <th>Name ({{selectedLang}})</th>
+         
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let company of companies; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td><img [src]="'http://127.0.0.1:8000/storage/' + company.companyLogo" 
+                width="50" 
+                alt="Company Logo"
+                >
+         </td>
+            <td>{{ company['companyName'] }}</td>
+            
+            <td>
+             
+              <button class="btn btn-sm btn-danger ms-3" (click)="deleteCompany(company.id)" >🗑 Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+  

@@ -1,0 +1,87 @@
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🤝 Manage Partners</h2>
+  
+    <!-- Add / Update Partner Form -->
+    <div class="card shadow p-4 mb-5">
+      <h4 class="mb-3">Add / Update Partner</h4>
+      <form [formGroup]="partnerForm" enctype="multipart/form-data">
+  
+        <div class="row g-3">
+          <!-- English Name -->
+          <div class="col-md-6">
+            <label class="form-label">Partner Name (EN)</label>
+            <input type="text" class="form-control"
+                   placeholder="Example Partner"
+                   formControlName="partnerName[en]">
+          </div>
+  
+          <!-- Arabic Name -->
+          <div class="col-md-6">
+            <label class="form-label">اسم الشريك (AR)</label>
+            <input type="text" class="form-control text-end"
+                   placeholder="شريك مثال"
+                   formControlName="partnerName[ar]">
+          </div>
+  
+          <!-- Partner Logo -->
+          <div class="col-md-6">
+            <label class="form-label">Partner Logo</label>
+            <input type="file" class="form-control"
+                   (change)="onFileChange($event, 'partnerLogo')">
+          </div>
+        </div>
+  
+        <p class="text-center response-success-msg" *ngIf="successMsg">{{successMsg}}</p>
+        <p class="text-center response-err-msg" *ngIf="errorMsg">{{errorMsg}}</p>
+  
+        <!-- Submit Button -->
+        <div class="mt-4 d-flex justify-content-start">
+          <button type="submit" class="btn btn-success" (click)="addPartner()">➕ Add Partner</button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Language Switcher -->
+    <div>
+      <label for="langSelect" class="me-2 fw-bold">Language:</label>
+      <select id="langSelect" class="form-select d-inline w-auto"
+              [(ngModel)]="selectedLang"
+              (change)="loadPartners()">
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+      </select>
+    </div>
+  
+    <!-- Partner List (GET + DELETE) -->
+    <div class="card shadow p-4 mt-4">
+      <h4 class="mb-3">All Partners</h4>
+      <table class="table table-bordered text-center align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Logo</th>
+            <th>Name ({{selectedLang}})</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let partner of partners; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <img *ngIf="partner.partnerLogo"
+                   [src]="'http://127.0.0.1:8000/storage/' + partner.partnerLogo"
+                   width="50"
+                   alt="Partner Logo">
+            </td>
+            <td>{{ partner['partnerName'] }}</td>
+            <td>
+              <button class="btn btn-sm btn-danger ms-3" (click)="deletePartner(partner.id)">🗑 Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

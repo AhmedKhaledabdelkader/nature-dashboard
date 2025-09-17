@@ -1,0 +1,74 @@
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🌍 Manage Countries</h2>
+  
+    <!-- Add Country Form -->
+    <div class="card shadow p-4 mb-5">
+      <h4 class="mb-3">Add / Update Country</h4>
+      <form [formGroup]="countryForm" (ngSubmit)="addCountry()" enctype="multipart/form-data">
+        <div class="row g-3">
+          <!-- English Name -->
+          <div class="col-md-6">
+            <label class="form-label">Country Name (EN)</label>
+            <input type="text" class="form-control"
+                   placeholder="Egypt"
+                   formControlName="countryName[en]">
+          </div>
+  
+          <!-- Arabic Name -->
+          <div class="col-md-6">
+            <label class="form-label">اسم الدولة (AR)</label>
+            <input type="text" class="form-control text-end"
+                   placeholder="مصر"
+                   formControlName="countryName[ar]">
+          </div>
+        </div>
+  
+        <!-- Success & Error Messages -->
+        <p class="text-center text-success mt-3" *ngIf="successMsg">{{successMsg}}</p>
+        <p class="text-center text-danger mt-3" *ngIf="errorMsg">{{errorMsg}}</p>
+  
+        <!-- Submit Button -->
+        <div class="mt-4 d-flex justify-content-between">
+          <button type="submit" class="btn btn-success">➕ Add Country</button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Language Switcher -->
+    <div class="mb-4">
+      <label for="langSelect" class="me-2 fw-bold">Language:</label>
+      <select id="langSelect" class="form-select d-inline w-auto"
+              [(ngModel)]="selectedLang"
+              (change)="loadCountries()">
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+      </select>
+    </div>
+  
+    <!-- Countries List -->
+    <div class="card shadow p-4">
+      <h4 class="mb-3">All Countries</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Name ({{selectedLang}})</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let country of countries; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ country['countryName'] }}</td>
+              <td>
+                <button class="btn btn-sm btn-danger ms-2" (click)="deleteCountry(country.id)">🗑 Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
